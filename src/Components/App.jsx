@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addContact, deleteContact } from "../redux/contactsSlice";
 import { setFilter } from "../redux/filtersSlice";
-import { ContactList } from "./ContactList/ContactList";
-import { ContactForm } from "./ContactForm/ContactForm";
-import { SearchBox } from "./SearchBox/SearchBox";
+import { lazy, Suspense } from "react";
+import { Loader } from "./Loader/Loader";
+const ContactForm = lazy(() => import("./ContactForm/ContactForm"));
+const ContactList = lazy(() => import("./ContactList/ContactList"));
+const SearchBox = lazy(() => import("./SearchBox/SearchBox"));
 
 function App() {
   const dispatch = useDispatch();
@@ -29,13 +31,15 @@ function App() {
   return (
     <>
       <div>
-        <h1>Phonebook</h1>
-        <ContactForm onAddContact={handleAddContact} />
-        <SearchBox value={filter} onChange={handleFilterChange} />
-        <ContactList
-          contacts={filteredContacts}
-          onDeleteContact={handleDeleteContact}
-        />
+        <Suspense fallback={<Loader />}>
+          <h1>Phonebook</h1>
+          <ContactForm onAddContact={handleAddContact} />
+          <SearchBox value={filter} onChange={handleFilterChange} />
+          <ContactList
+            contacts={filteredContacts}
+            onDeleteContact={handleDeleteContact}
+          />
+        </Suspense>
       </div>
     </>
   );

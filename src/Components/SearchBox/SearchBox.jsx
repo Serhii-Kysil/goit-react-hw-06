@@ -1,6 +1,6 @@
 import css from "./SearchBox.module.css";
 
-export const SearchBox = ({ value, onChange }) => {
+export default function SearchBox({ value, onChange }) {
   return (
     <>
       <p className={css.text}>Find contacts by name</p>
@@ -13,4 +13,4 @@ export const SearchBox = ({ value, onChange }) => {
       />
     </>
   );
-};
+}

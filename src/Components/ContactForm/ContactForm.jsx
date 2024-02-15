@@ -16,7 +16,7 @@ const userSchema = Yup.object().shape({
     .matches(/^\+?[0-9\s-]+$/, "Invalid phone number"),
 });
 
-export const ContactForm = ({ onAddContact }) => {
+export default function ContactForm({ onAddContact }) {
   const nameField = useId();
   const numberField = useId();
 
@@ -67,4 +67,4 @@ export const ContactForm = ({ onAddContact }) => {
       </Form>
     </Formik>
   );
-};
+}
