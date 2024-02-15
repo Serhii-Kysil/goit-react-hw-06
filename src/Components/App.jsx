@@ -1,37 +1,30 @@
-import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addContact, deleteContact } from "../redux/contactsSlice";
+import { setFilter } from "../redux/filtersSlice";
 import { ContactList } from "./ContactList/ContactList";
-import { SearchBox } from "./SearchBox/SearchBox";
 import { ContactForm } from "./ContactForm/ContactForm";
+import { SearchBox } from "./SearchBox/SearchBox";
 
 function App() {
-  const [contacts, setContacts] = useState(() => {
-    const storedContacts = localStorage.getItem("contacts");
-    return storedContacts ? JSON.parse(storedContacts) : [];
-  });
+  const dispatch = useDispatch();
+  const contacts = useSelector((state) => state.contacts.items);
+  const filter = useSelector((state) => state.filters.name);
 
-  const [filter, setFilter] = useState("");
+  const handleAddContact = (newContact) => {
+    dispatch(addContact(newContact));
+  };
 
-  useEffect(() => {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }, [contacts]);
+  const handleDeleteContact = (contactId) => {
+    dispatch(deleteContact(contactId));
+  };
+
+  const handleFilterChange = (event) => {
+    dispatch(setFilter(event.target.value));
+  };
 
   const filteredContacts = contacts.filter((contact) =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
-
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-  };
-
-  const handleAddContact = (newContact) => {
-    return setContacts((prevContacts) => [...prevContacts, newContact]);
-  };
-
-  const handleDeleteContact = (contactId) => {
-    setContacts((prevContacts) => {
-      return prevContacts.filter((contact) => contact.id !== contactId);
-    });
-  };
 
   return (
     <>

@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { BsFillPersonFill } from "react-icons/bs";
 import { FaPhone } from "react-icons/fa6";
 import css from "./Contact.module.css";
