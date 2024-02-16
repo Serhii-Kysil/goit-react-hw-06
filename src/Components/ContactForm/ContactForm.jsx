@@ -3,6 +3,8 @@ import * as Yup from "yup";
 import { nanoid } from "nanoid";
 import { useId } from "react";
 import css from "./ContactForm.module.css";
+import { addContact } from "../../redux/contactsSlice";
+import { useDispatch } from "react-redux";
 
 const userSchema = Yup.object().shape({
   name: Yup.string()
@@ -16,9 +18,14 @@ const userSchema = Yup.object().shape({
     .matches(/^\+?[0-9\s-]+$/, "Invalid phone number"),
 });
 
-export default function ContactForm({ onAddContact }) {
+export default function ContactForm() {
   const nameField = useId();
   const numberField = useId();
+
+  const dispatch = useDispatch();
+  const handleAddContact = (newContact) => {
+    dispatch(addContact(newContact));
+  };
 
   return (
     <Formik
@@ -34,7 +41,7 @@ export default function ContactForm({ onAddContact }) {
           number: values.number,
         };
 
-        onAddContact(newContact);
+        handleAddContact(newContact);
         actions.resetForm();
       }}
     >
